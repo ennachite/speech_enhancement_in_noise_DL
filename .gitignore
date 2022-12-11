@@ -1,0 +1,5 @@
+.vscode
+/data/LibriSpeech/dev-clean/
+/data/LibriSpeech/dev-noise/
+speech_denoising_fully_connected.ipynb
+speech-enhancement-tensorflow-unet-softmask.ipynb
