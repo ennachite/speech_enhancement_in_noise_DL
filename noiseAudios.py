@@ -1,8 +1,8 @@
 import glob
 import librosa
+import soundfile as sf
 import random
 import os
-from scipy.io.wavfile import write
 from sklearn import preprocessing
 
 def alpha(RSB):
@@ -10,12 +10,14 @@ def alpha(RSB):
 
 if __name__ == '__main__':
     # Get the list of all the audio files
-    audioFiles = glob.glob("data/LibriSpeech/dev-clean/**/**/*.flac", recursive=True)
+    audioFiles = glob.glob("data/LibriSpeech/dev-clean/**/**/*.flac", recursive=False)
     # Get the list of all the noise files
     noiseFile = glob.glob("data/noise/babble.wav")
     noise, sr = librosa.load(noiseFile[0])
     i = 0
     x = len(audioFiles)
+    if not os.path.isdir("data/LibriSpeech/dev-noise/"):
+        os.makedirs("data/LibriSpeech/dev-noise/")
     # Loop through all the audio files
     for audioFile in audioFiles:
         # check if folders exist
@@ -35,6 +37,6 @@ if __name__ == '__main__':
         # Save the noisy audio
         fileName = os.path.basename(audioFile)
         filePath = "data/LibriSpeech/dev-noise/" + audioPath + "/" + fileName.split(".")[0] + "_" + str(snr) + ".wav"
-        write(filePath, sr, noisyAudio.T)
+        sf.write(filePath, noisyAudio.T,sr)
         i += 1
         print(filePath + " Saved Successfully " + str(i/x*100) + "%")
